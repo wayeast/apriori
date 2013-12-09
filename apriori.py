@@ -123,6 +123,10 @@ class Apriori_Itemsets(object):
             self._L[k] = prune(Ck, self._data, self._min_sup)
             k += 1
 
+    @property
+    def itemsets(self):
+        return self._L
+
 
 
 def support_count(itemset, data):
