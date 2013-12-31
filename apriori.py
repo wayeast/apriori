@@ -5,7 +5,13 @@ import copy
 import itertools
 from collections import defaultdict
 
-
+# This implementation is written to handle itemsets that consist of field name and
+# value combinations.  Since a maintenance record has only one value for any given
+# field, no two 'items' with the same field may pertain to the same Itemset.  Moreover,
+# for any two records, or Itemsets, to be considered equal, not only must all field names
+# of their corresponding Items be equal but so must all the values.  This subtlety is
+# prefectly logical, but requires a slight of hand in the implementation.  It is manifest
+# in the different hash methods for Item objects and Itemset objects.
 class Item(object):
     def __init__(self, field, value):
         self.field = field
@@ -51,6 +57,8 @@ class Item(object):
             return self.field >= other.field
  
     def __hash__(self):
+        # It is sufficient for just the field names to be equal
+        # for two Items to be equal.
         return hash(self.field)
 
     def __str__(self):
@@ -93,6 +101,8 @@ class Itemset(object):
         return self.items == other.items
 
     def __hash__(self):
+        # For two Itemsets to be equal, all fields and all values must be
+        # equal.
         return sum([hash(i.field) + hash(i.value) for i in self.items])
 
        
